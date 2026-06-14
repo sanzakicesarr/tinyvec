@@ -1,0 +1,42 @@
+# --- Secrets: NIEMALS committen (Regel #1) ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+secrets/
+credentials*
+*token*
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# --- Virtuelle Umgebung ---
+.venv/
+venv/
+env/
+
+# --- Daten / Modelle / Indizes (zu groß / regenerierbar) ---
+*.npz
+*.db
+*.sqlite
+*.sqlite3
+models/
+data/*.bin
+
+# --- Tooling-Caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
