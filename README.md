@@ -10,8 +10,7 @@ semantic search and RAG work under the hood, one small step at a time.
 
 ## Status
 
-**Day 1** — the geometry of similarity, by hand. See [ROADMAP.md](ROADMAP.md)
-for the full plan.
+**Day 1** — the geometry of similarity, by hand.
 
 ## Quickstart
 
