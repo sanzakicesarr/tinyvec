@@ -2,12 +2,24 @@
 .env
 .env.*
 !.env.example
+.envrc
 *.key
 *.pem
 *.p12
+*.pfx
+# SSH private keys
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.ppk
+# eng gefasste Secret-Dateien (kein breites *token* -> verschluckt sonst tokenizer.py o.ä.)
 secrets/
-credentials*
-*token*
+*.secret
+*.token
+credentials*.json
+credentials*.yaml
+credentials*.yml
 
 # --- Python ---
 __pycache__/

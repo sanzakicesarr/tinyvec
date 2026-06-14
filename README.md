@@ -16,10 +16,11 @@ for the full plan.
 ## Quickstart
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-python -m tinyvec.distance   # cosine / L2 / dot on toy vectors
-pytest                       # run the checks
+python -m tinyvec.distance       # cosine / L2 / dot on toy vectors
+pytest                           # run the checks
 ```
 
 ## Why
