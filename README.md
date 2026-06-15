@@ -19,6 +19,7 @@ Built so far — each one a single learning step:
 - **Brute-force search** — `VectorStore`: add records, get the top-k most similar (`gatekeeper/store.py`)
 - **Vectorized search** — `NumpyVectorStore`: the same search as one matrix multiply (`gatekeeper/numpy_store.py`)
 - **Real embeddings** — turn actual sentences into vectors with a trained model (`gatekeeper/embed.py`, optional `[embeddings]` extra)
+- **Pluggable backends** — one `EmbeddingBackend` interface, swap **local** (sentence-transformers) for **managed** AWS Bedrock (Titan / Cohere) with the same store (`gatekeeper/backends.py`, optional `[bedrock]` extra)
 
 Write-up: [docs/chapter-1-similarity-and-search.md](docs/chapter-1-similarity-and-search.md).
 
