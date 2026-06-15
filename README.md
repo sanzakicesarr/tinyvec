@@ -18,6 +18,7 @@ Built so far — each one a single learning step:
 - **Normalizing** — unit vectors, so cosine becomes a plain dot product
 - **Brute-force search** — `VectorStore`: add records, get the top-k most similar (`tinyvec/store.py`)
 - **Vectorized search** — `NumpyVectorStore`: the same search as one matrix multiply (`tinyvec/numpy_store.py`)
+- **Real embeddings** — turn actual sentences into vectors with a trained model (`tinyvec/embed.py`, optional `[embeddings]` extra)
 
 Write-up: [docs/chapter-1-similarity-and-search.md](docs/chapter-1-similarity-and-search.md).
 
@@ -32,6 +33,10 @@ python -m tinyvec.distance       # cosine / L2 / dot on toy vectors
 python -m tinyvec.store          # brute-force semantic search demo
 python -m tinyvec.numpy_store    # the same search, vectorized with NumPy
 pytest                           # run the checks
+
+# optional: real text embeddings (pulls in torch — heavier, ~first run downloads a model)
+pip install -e ".[embeddings]"
+python -m tinyvec.embed          # semantic search on real sentences
 ```
 
 ## Why
