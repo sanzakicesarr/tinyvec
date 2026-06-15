@@ -14,9 +14,9 @@ import math
 
 import pytest
 
-from tinyvec.distance import dot
-from tinyvec.embed import Embedder
-from tinyvec.numpy_store import NumpyVectorStore
+from gatekeeper.distance import dot
+from gatekeeper.embed import Embedder
+from gatekeeper.numpy_store import NumpyVectorStore
 
 
 @pytest.fixture(autouse=True)

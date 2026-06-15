@@ -1,4 +1,4 @@
-"""Day 3 — brute-force top-k search: the first time tinyvec feels like a database.
+"""Day 3 — brute-force top-k search: the first time gatekeeper feels like a database.
 
 A ``VectorStore`` keeps a list of records, each one an ``(id, text, vector)``.
 To search, we compare the query vector against *every* stored vector with cosine
@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tinyvec.distance import Vector, cosine
+from gatekeeper.distance import Vector, cosine
 
 
 @dataclass(frozen=True)

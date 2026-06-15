@@ -1,6 +1,6 @@
 # Chapter 1 — Similarity and Search
 
-> The first four steps of tinyvec, written up in plain language. By the end you
+> The first four steps of gatekeeper, written up in plain language. By the end you
 > can explain how semantic search works — and you have built every piece of it
 > yourself, with nothing but Python and a little NumPy.
 
@@ -17,7 +17,7 @@ of dimensions. That is why we build everything first in 2-D, where you can see i
 
 ## 2. Measuring how close two vectors are
 
-Three classic ways, all written by hand in [`tinyvec/distance.py`](../tinyvec/distance.py):
+Three classic ways, all written by hand in [`gatekeeper/distance.py`](../gatekeeper/distance.py):
 
 - **Dot product** — multiply matching components and add them up. Grows with length.
 - **Euclidean (L2) distance** — the straight-line gap between the two arrow tips.
@@ -28,7 +28,7 @@ through `0` (at right angles), to `-1` (opposite). Length is ignored, so only th
 *direction* — the meaning — matters.
 
 ```python
-from tinyvec.distance import cosine
+from gatekeeper.distance import cosine
 
 cosine([1, 0], [1, 0])    # 1.0  — same direction
 cosine([1, 0], [0, 1])    # 0.0  — orthogonal
@@ -42,7 +42,7 @@ we first scale every vector to **length 1** ("normalize" it), that division is
 already done — and cosine collapses into a plain dot product:
 
 ```python
-from tinyvec.distance import normalize, dot, cosine
+from gatekeeper.distance import normalize, dot, cosine
 
 a, b = [3, 4], [4, 3]
 cosine(a, b)                              # 0.96
@@ -59,10 +59,10 @@ a vector, and similar meanings point in similar directions. "Hund" (dog) and
 "Katze" (cat) end up close; "Steuererklärung" (tax return) ends up far away.
 
 To search, we turn the query into a vector too, then compare it against every
-stored vector and keep the closest. That is [`VectorStore`](../tinyvec/store.py):
+stored vector and keep the closest. That is [`VectorStore`](../gatekeeper/store.py):
 
 ```python
-from tinyvec.store import VectorStore
+from gatekeeper.store import VectorStore
 
 store = VectorStore()
 store.add("d1", "Hund", [0.90, 0.40])
@@ -77,7 +77,7 @@ take the top `k`. It is the simplest *correct* search there is — and the hones
 baseline that every faster index has to beat. Slow at huge scale, perfect for
 learning and small data.
 
-> The runnable demo (`python -m tinyvec.store`) uses a slightly larger set that
+> The runnable demo (`python -m gatekeeper.store`) uses a slightly larger set that
 > also includes "Sterne", so its live output has a few more rows than the snippet
 > above — same idea, more records.
 
@@ -91,10 +91,10 @@ Stack all stored (normalized) vectors as the rows of one matrix `M`. Then a sear
 is a **single matrix–vector product** `M @ q`, which produces every cosine score in
 one fast, compiled step. This is exactly where the normalize trick from §3 pays
 off: because the rows and the query are unit vectors, `M @ q` *is* the list of
-cosines — no per-row division needed. That is [`NumpyVectorStore`](../tinyvec/numpy_store.py):
+cosines — no per-row division needed. That is [`NumpyVectorStore`](../gatekeeper/numpy_store.py):
 
 ```python
-from tinyvec.numpy_store import NumpyVectorStore
+from gatekeeper.numpy_store import NumpyVectorStore
 
 store = NumpyVectorStore()          # same API as VectorStore
 store.add("d1", "Hund", [0.90, 0.40])

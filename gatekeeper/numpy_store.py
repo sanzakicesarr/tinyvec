@@ -23,8 +23,8 @@ from pathlib import Path
 
 import numpy as np
 
-from tinyvec.distance import Vector
-from tinyvec.store import SearchResult
+from gatekeeper.distance import Vector
+from gatekeeper.store import SearchResult
 
 
 def _unit(v: np.ndarray) -> np.ndarray:
@@ -134,7 +134,7 @@ class NumpyVectorStore:
 
 
 def _demo() -> None:
-    from tinyvec.store import VectorStore
+    from gatekeeper.store import VectorStore
 
     data = [
         ("d1", "Hund", [0.90, 0.40]),

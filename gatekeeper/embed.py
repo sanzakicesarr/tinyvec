@@ -28,7 +28,7 @@ _DEFAULT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 @cache
 def _load_model(name: str) -> SentenceTransformer:
-    # Imported here (not at top) so the rest of tinyvec works without torch.
+    # Imported here (not at top) so the rest of gatekeeper works without torch.
     # @cache keeps one model per name for the whole process (never evicts) --
     # fine for a CLI / learning tool; it would be a slow leak in a long server.
     from sentence_transformers import SentenceTransformer
@@ -71,7 +71,7 @@ class Embedder:
 
 
 def _demo() -> None:
-    from tinyvec.numpy_store import NumpyVectorStore
+    from gatekeeper.numpy_store import NumpyVectorStore
 
     docs = [
         ("d1", "The dog barked at the mailman."),

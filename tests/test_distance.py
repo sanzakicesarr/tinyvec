@@ -1,14 +1,14 @@
 """Day 1 & 2 auto-checks -- run with:  pytest
 
 These are the "extra eyes" that confirm the math in one command, on top of your
-own live look via `python -m tinyvec.distance`.
+own live look via `python -m gatekeeper.distance`.
 """
 
 import math
 
 import pytest
 
-from tinyvec.distance import cosine, dot, euclidean, norm, normalize
+from gatekeeper.distance import cosine, dot, euclidean, norm, normalize
 
 
 def test_dot_known_values():

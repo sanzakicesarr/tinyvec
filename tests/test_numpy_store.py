@@ -1,6 +1,6 @@
 """Day 4 auto-checks -- run with:  pytest
 
-Verifies the vectorized NumPy search in tinyvec/numpy_store.py. The headline
+Verifies the vectorized NumPy search in gatekeeper/numpy_store.py. The headline
 test is test_matches_the_pure_python_store: the fast store must return the SAME
 ranking and (near-)same scores as Day 3's VectorStore -- an optimization that
 changes the answer is a bug, not an optimization.
@@ -11,8 +11,8 @@ import math
 import numpy as np
 import pytest
 
-from tinyvec.numpy_store import NumpyVectorStore
-from tinyvec.store import SearchResult, VectorStore
+from gatekeeper.numpy_store import NumpyVectorStore
+from gatekeeper.store import SearchResult, VectorStore
 
 
 def _demo_store() -> NumpyVectorStore:

@@ -1,6 +1,6 @@
 """Day 3 auto-checks -- run with:  pytest
 
-Verifies the brute-force top-k search in tinyvec/store.py: that it ranks by
+Verifies the brute-force top-k search in gatekeeper/store.py: that it ranks by
 similarity (closest first), respects k, and handles the awkward cases (empty
 store, k bigger than the store, k < 1, wrong dimension, vector copied on add).
 """
@@ -9,7 +9,7 @@ import math
 
 import pytest
 
-from tinyvec.store import SearchResult, VectorStore
+from gatekeeper.store import SearchResult, VectorStore
 
 
 def _demo_store() -> VectorStore:

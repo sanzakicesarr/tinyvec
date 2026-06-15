@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tinyvec"
+name = "gatekeeper"
 version = "0.1.0"
 description = "A vector database built from scratch, for learning."
 readme = "README.md"
@@ -23,7 +23,7 @@ embeddings = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["tinyvec*"]
+include = ["gatekeeper*"]
 
 [tool.ruff]
 line-length = 100
