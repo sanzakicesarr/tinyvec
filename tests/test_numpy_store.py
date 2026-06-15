@@ -149,3 +149,70 @@ def test_add_dimension_mismatch_raises():
     store = _demo_store()  # 2D
     with pytest.raises(ValueError):
         store.add("bad", "three-d", [1.0, 0.0, 0.0])
+
+
+# --- Day 8: persistence (save / load) -----------------------------------------
+
+
+def test_save_and_load_round_trip(tmp_path):
+    store = _demo_store()
+    path = tmp_path / "store.npz"
+    store.save(path)
+
+    loaded = NumpyVectorStore.load(path)
+    assert len(loaded) == len(store)
+    # a loaded store searches identically to the one we saved
+    q = [0.85, 0.45]
+    before, after = store.search(q, k=3), loaded.search(q, k=3)
+    assert [h.id for h in after] == [h.id for h in before]
+    for a, b in zip(after, before, strict=True):
+        assert math.isclose(a.score, b.score, abs_tol=1e-9)
+
+
+def test_save_and_load_empty_store(tmp_path):
+    path = tmp_path / "empty.npz"
+    NumpyVectorStore().save(path)
+    loaded = NumpyVectorStore.load(path)
+    assert len(loaded) == 0
+    assert loaded.search([1.0, 0.0], k=3) == []
+
+
+def test_loaded_store_preserves_fields_as_plain_str(tmp_path):
+    path = tmp_path / "s.npz"
+    _demo_store().save(path)
+    top = NumpyVectorStore.load(path).search([0.9, 0.4], k=1)[0]
+    assert top.id == "d1"
+    assert top.text == "Hund"
+    assert isinstance(top.id, str)    # plain python str...
+    assert isinstance(top.text, str)  # ...not numpy.str_
+
+
+def test_round_trip_preserves_umlauts_and_vector_values(tmp_path):
+    store = NumpyVectorStore()
+    store.add("d1", "Steuererklärung", [0.6, 0.8])  # non-ASCII text
+    path = tmp_path / "umlaut.npz"
+    store.save(path)
+    assert path.exists()  # the file really got written
+
+    loaded = NumpyVectorStore.load(path)
+    assert loaded.search([0.6, 0.8], k=1)[0].text == "Steuererklärung"  # umlaut survived
+    # the stored (normalized) vectors are bit-for-bit the same
+    assert np.allclose(np.asarray(loaded._vectors), np.asarray(store._vectors))
+
+
+def test_can_add_to_a_loaded_store(tmp_path):
+    path = tmp_path / "s.npz"
+    _demo_store().save(path)
+    loaded = NumpyVectorStore.load(path)
+    loaded.add("new", "Vogel", [0.95, 0.3])  # adding after load must work
+    assert len(loaded) == 4
+    assert loaded.search([0.95, 0.3], k=1)[0].id == "new"
+
+
+def test_save_load_without_npz_suffix(tmp_path):
+    # save/load stay symmetric even if you omit the .npz extension
+    store = _demo_store()
+    base = tmp_path / "mystore"
+    store.save(base)
+    loaded = NumpyVectorStore.load(base)
+    assert len(loaded) == len(store)

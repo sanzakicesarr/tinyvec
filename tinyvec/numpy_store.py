@@ -12,10 +12,14 @@ vectors, and for unit vectors cosine similarity is just the dot product. So
 
 Same public API as ``VectorStore`` and the same ``SearchResult`` -- so the two
 stores are interchangeable, and we can prove they return identical rankings
-(see the tests). Later (Day 10) we will measure just how much faster this is.
+(see the tests). It can also ``save`` itself to (and ``load`` from) a single
+``.npz`` file, which turns it from a toy into a real, reusable database. Later
+(Day 10) we will measure just how much faster the search is.
 """
 
 from __future__ import annotations
+
+from pathlib import Path
 
 import numpy as np
 
@@ -32,6 +36,12 @@ def _unit(v: np.ndarray) -> np.ndarray:
     if length == 0.0:
         return v
     return v / length
+
+
+def _as_npz(path: str | Path) -> Path:
+    """Ensure the path ends in .npz, so save() and load() agree on the filename."""
+    path = Path(path)
+    return path if path.suffix == ".npz" else Path(f"{path}.npz")
 
 
 class NumpyVectorStore:
@@ -89,6 +99,38 @@ class NumpyVectorStore:
         # insertion order, matching Day 3's stable Python sort exactly.
         order = np.argsort(-scores, kind="stable")[:k]
         return [SearchResult(self._ids[i], self._texts[i], float(scores[i])) for i in order]
+
+    def save(self, path: str | Path) -> None:
+        """Save the whole store to one ``.npz`` file (vectors + ids + texts).
+
+        A ``.npz`` suffix is added if missing, so ``save("x")`` and ``load("x")``
+        are symmetric. Plain data only: :meth:`load` reads it back with
+        ``allow_pickle=False``, so a store file can never execute code when opened.
+        An empty store round-trips to an empty store.
+        """
+        path = _as_npz(path)
+        matrix = np.asarray(self._vectors) if self._vectors else np.empty((0, 0))
+        np.savez(
+            path,
+            vectors=matrix,
+            ids=np.array(self._ids, dtype=str),
+            texts=np.array(self._texts, dtype=str),
+        )
+
+    @classmethod
+    def load(cls, path: str | Path) -> NumpyVectorStore:
+        """Build a fresh store from a ``.npz`` file written by :meth:`save`.
+
+        Reconstructs ids, texts, and the unit vectors; the result is a normal,
+        writable store (you can ``add`` more and ``search`` it).
+        """
+        data = np.load(_as_npz(path), allow_pickle=False)
+        store = cls()
+        store._ids = [str(x) for x in data["ids"]]
+        store._texts = [str(x) for x in data["texts"]]
+        matrix = data["vectors"]
+        store._vectors = list(matrix) if matrix.size else []
+        return store
 
 
 def _demo() -> None:
