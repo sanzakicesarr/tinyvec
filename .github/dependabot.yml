@@ -1,0 +1,9 @@
+# Keep the GitHub Actions used in CI up to date automatically. Dependabot opens
+# a PR when a newer version of an action is available, so the pins stay current
+# (and any compromised/yanked version gets flagged) without manual tracking.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

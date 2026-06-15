@@ -1,5 +1,7 @@
 # tinyvec
 
+[![CI](https://github.com/sanzakicesarr/tinyvec/actions/workflows/ci.yml/badge.svg)](https://github.com/sanzakicesarr/tinyvec/actions/workflows/ci.yml)
+
 A vector database built **from scratch** — to actually understand how embeddings,
 semantic search and RAG work under the hood, one small step at a time.
 
@@ -10,7 +12,14 @@ semantic search and RAG work under the hood, one small step at a time.
 
 ## Status
 
-**Day 1** — the geometry of similarity, by hand.
+Built so far — each one a single learning step:
+
+- **Distance metrics by hand** — dot, L2, cosine (`tinyvec/distance.py`)
+- **Normalizing** — unit vectors, so cosine becomes a plain dot product
+- **Brute-force search** — `VectorStore`: add records, get the top-k most similar (`tinyvec/store.py`)
+- **Vectorized search** — `NumpyVectorStore`: the same search as one matrix multiply (`tinyvec/numpy_store.py`)
+
+Write-up: [docs/chapter-1-similarity-and-search.md](docs/chapter-1-similarity-and-search.md).
 
 ## Quickstart
 
@@ -18,7 +27,10 @@ semantic search and RAG work under the hood, one small step at a time.
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
+
 python -m tinyvec.distance       # cosine / L2 / dot on toy vectors
+python -m tinyvec.store          # brute-force semantic search demo
+python -m tinyvec.numpy_store    # the same search, vectorized with NumPy
 pytest                           # run the checks
 ```
 
